@@ -1,0 +1,73 @@
+@page "/categoria"
+@layout Layout.EventLayout
+@rendermode InteractiveServer
+
+<PageTitle>Categorias</PageTitle>
+
+<input type="text" placeholder="Agregar categoria" value="@NombreCategoria" @onchange="(e) => SetNombreCategoria(e)">
+<button class="btn btn-info" @onclick="AgregarCategoria">Agregar</button>
+
+<h1>Categorias</h1>
+<ul>
+    @foreach (var item in categorias)
+    {
+        <li style="margin-top: 10px;">
+            @if (BoolEditar)
+            {
+                <input type="text" value="@item" @onchange="(e) => SetNombreEditCategoria(e)">
+                <button style="margin-left: 15px; margin-right: 15px    " class="btn btn-primary" @onclick="() => GuardarItem(item)">Guardar</button>
+            }
+            else 
+            {
+                @item
+                <button style="margin-left: 15px; margin-right: 15px" class="btn btn-primary" @onclick="() => EditarItem(item)">Editar</button>
+            }
+            @* <button class="btn btn-primary" @onclick="EditarItem">@((BoolEditar? "Guardar" : "Editar"))</button> *@
+            <button class="btn btn-danger" @onclick="() => EliminarCategoria(item)">Eliminar</button>
+        </li>
+    }
+</ul>
+
+@code {
+    private List<string> categorias = new List<string>() 
+        { "Computadoras", "Procesadores", "Memorias Ram", "Discos rigidos", "Teclados", "Audifonos" };
+    private string? NombreCategoria { get; set; }
+    private string? NombreEditCategoria { get; set; }    
+    private bool BoolEditar = false;
+    private string ButtonNombreEdit = "Editar";
+    private void SetNombreEditCategoria(ChangeEventArgs e)
+    {
+        NombreEditCategoria = e.Value?.ToString();
+    }
+    private void SetNombreCategoria(ChangeEventArgs e)
+    {
+        NombreCategoria = e.Value?.ToString();
+    }
+    private void AgregarCategoria()
+    {
+        if (NombreCategoria != null)
+        {
+            categorias.Add(NombreCategoria);
+            NombreCategoria = "";
+            System.Console.WriteLine(categorias.IndexOf("Computadoras"));
+        }
+    } 
+    private void EliminarCategoria(string eliminarItem)
+    {
+        categorias.Remove(eliminarItem);
+    }
+    private void EditarItem(string nombreItem)
+    {
+        BoolEditar = true;
+        NombreEditCategoria = nombreItem;
+        System.Console.WriteLine(NombreEditCategoria);
+    }
+    private void GuardarItem(string nombreItem)
+    {
+        BoolEditar = false;
+        int index = categorias.IndexOf(nombreItem);
+        categorias[index] = NombreEditCategoria!;
+        NombreEditCategoria = nombreItem;
+        System.Console.WriteLine(NombreEditCategoria);
+    }
+}

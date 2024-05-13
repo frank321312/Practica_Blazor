@@ -1,0 +1,16 @@
+@page "/event"
+@rendermode InteractiveServer
+@layout Layout.EventLayout
+
+<PageTitle>Eventos de practica</PageTitle>
+
+<h1>Contador: @contador</h1>
+<button class="btn-primary btn" @onclick="IncrimentarContador">Incrementar +1</button>
+
+@code {
+    private int contador = 0;
+    private void IncrimentarContador()
+    {
+        contador++;
+    }
+}
